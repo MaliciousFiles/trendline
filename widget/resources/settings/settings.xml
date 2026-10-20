@@ -1,0 +1,39 @@
+<settings>
+    <group id="account" title="@Strings.AccountGroup" description="@Strings.AccountGroupDesc">
+        <setting propertyKey="@Properties.username" title="@Strings.Username">
+            <settingConfig type="alphaNumeric" />
+        </setting>
+        <setting propertyKey="@Properties.password" title="@Strings.Password">
+            <settingConfig type="password" />
+        </setting>
+        <setting propertyKey="@Properties.region" title="@Strings.Region">
+            <settingConfig type="list">
+                <listEntry value="0">@Strings.RegionUS</listEntry>
+                <listEntry value="1">@Strings.RegionOUS</listEntry>
+                <listEntry value="2">@Strings.RegionJP</listEntry>
+            </settingConfig>
+        </setting>
+    </group>
+
+    <group id="display" title="@Strings.DisplayGroup" description="@Strings.DisplayGroup">
+        <setting propertyKey="@Properties.units" title="@Strings.Units">
+            <settingConfig type="list">
+                <listEntry value="0">@Strings.UnitsMgdl</listEntry>
+                <listEntry value="1">@Strings.UnitsMmol</listEntry>
+            </settingConfig>
+        </setting>
+        <setting propertyKey="@Properties.low" title="@Strings.Low">
+            <settingConfig type="numeric" min="40" max="400" errorMessage="@Strings.ThresholdError" />
+        </setting>
+        <setting propertyKey="@Properties.high" title="@Strings.High">
+            <settingConfig type="numeric" min="40" max="400" errorMessage="@Strings.ThresholdError" />
+        </setting>
+        <setting propertyKey="@Properties.bgUpdates" title="@Strings.BgUpdates">
+            <settingConfig type="list">
+                <listEntry value="0">@Strings.BgAuto</listEntry>
+                <listEntry value="1">@Strings.BgOn</listEntry>
+                <listEntry value="2">@Strings.BgOff</listEntry>
+            </settingConfig>
+        </setting>
+    </group>
+</settings>

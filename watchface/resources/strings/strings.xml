@@ -1,0 +1,23 @@
+<strings>
+    <string id="AppName">Trendline Face</string>
+
+    <string id="SlotsGroup">Data fields</string>
+    <string id="SlotsGroupDesc">Left and right sit beside the clock; bottom sits under the glucose line. Set a slot to None to hide it.</string>
+    <string id="SlotL1">Left, top</string>
+    <string id="SlotL2">Left, bottom</string>
+    <string id="SlotR1">Right, top</string>
+    <string id="SlotR2">Right, bottom</string>
+    <string id="SlotB1">Bottom, left</string>
+    <string id="SlotB2">Bottom, right</string>
+
+    <string id="FieldNone">None</string>
+    <string id="FieldSteps">Steps</string>
+    <string id="FieldHeart">Heart rate</string>
+    <string id="FieldDistance">Distance</string>
+    <string id="FieldElevation">Elevation</string>
+    <string id="FieldSun">Next sunrise / sunset</string>
+    <string id="FieldTemp">Temperature</string>
+    <string id="FieldCalories">Calories</string>
+    <string id="FieldFloors">Floors climbed</string>
+    <string id="FieldActive">Active minutes (week)</string>
+</strings>

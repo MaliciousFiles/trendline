@@ -1,0 +1,18 @@
+<strings>
+    <string id="AccountGroup">Dexcom Share account</string>
+    <string id="AccountGroupDesc">Use the same login as the Dexcom app on your phone. Share must be turned on in the Dexcom app.</string>
+    <string id="Username">Username or email</string>
+    <string id="Password">Password</string>
+    <string id="Region">Region</string>
+    <string id="RegionUS">United States</string>
+    <string id="RegionOUS">Outside the US</string>
+    <string id="RegionJP">Japan</string>
+
+    <string id="DisplayGroup">Display</string>
+    <string id="Units">Units</string>
+    <string id="UnitsMgdl">mg/dL</string>
+    <string id="UnitsMmol">mmol/L</string>
+    <string id="Low">Low threshold (mg/dL)</string>
+    <string id="High">High threshold (mg/dL)</string>
+    <string id="ThresholdError">Enter a value between 40 and 400</string>
+</strings>

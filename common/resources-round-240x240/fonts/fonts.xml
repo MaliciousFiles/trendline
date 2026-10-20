@@ -1,0 +1,10 @@
+<fonts>
+    <font id="Hero" filename="hero.fnt" antialias="true" />
+    <font id="Clock" filename="clock.fnt" antialias="true" />
+    <font id="Sec" filename="sec.fnt" antialias="true" />
+    <font id="Line" filename="line.fnt" antialias="true" />
+    <font id="Label" filename="label.fnt" antialias="true" />
+    <font id="Small" filename="small.fnt" antialias="true" />
+    <font id="Word" filename="word.fnt" antialias="true" />
+    <font id="Icons" filename="icons.fnt" antialias="false" />
+</fonts>

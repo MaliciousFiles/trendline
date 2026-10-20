@@ -1,0 +1,15 @@
+info face="Inter" size=56 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=1,1
+common lineHeight=46 base=45 scaleW=512 scaleH=47 pages=1 packed=0
+page id=0 file="clock.png"
+chars count=11
+char id=48 x=0 y=0 width=35 height=46 xoffset=-1 yoffset=0 xadvance=33 page=0 chnl=15
+char id=49 x=36 y=0 width=21 height=44 xoffset=-1 yoffset=1 xadvance=19 page=0 chnl=15
+char id=50 x=58 y=0 width=33 height=45 xoffset=-1 yoffset=0 xadvance=31 page=0 chnl=15
+char id=51 x=92 y=0 width=34 height=46 xoffset=-1 yoffset=0 xadvance=32 page=0 chnl=15
+char id=52 x=127 y=0 width=36 height=44 xoffset=-1 yoffset=1 xadvance=34 page=0 chnl=15
+char id=53 x=164 y=0 width=33 height=45 xoffset=-1 yoffset=1 xadvance=31 page=0 chnl=15
+char id=54 x=198 y=0 width=34 height=46 xoffset=-1 yoffset=0 xadvance=32 page=0 chnl=15
+char id=55 x=233 y=0 width=31 height=44 xoffset=-1 yoffset=1 xadvance=29 page=0 chnl=15
+char id=56 x=265 y=0 width=33 height=46 xoffset=-1 yoffset=0 xadvance=31 page=0 chnl=15
+char id=57 x=299 y=0 width=34 height=46 xoffset=-1 yoffset=0 xadvance=32 page=0 chnl=15
+char id=58 x=334 y=0 width=14 height=31 xoffset=-1 yoffset=15 xadvance=12 page=0 chnl=15

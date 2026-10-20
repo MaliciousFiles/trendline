@@ -1,0 +1,9 @@
+<properties>
+    <property id="username" type="string"></property>
+    <property id="password" type="string"></property>
+    <property id="region" type="number">0</property>
+    <property id="units" type="number">0</property>
+    <property id="low" type="number">70</property>
+    <property id="high" type="number">180</property>
+    <property id="bgUpdates" type="number">0</property>
+</properties>

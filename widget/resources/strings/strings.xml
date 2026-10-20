@@ -1,0 +1,7 @@
+<strings>
+    <string id="AppName">Trendline</string>
+    <string id="BgUpdates">Update in background</string>
+    <string id="BgAuto">Auto (when glances are on)</string>
+    <string id="BgOn">Always</string>
+    <string id="BgOff">Only when open</string>
+</strings>

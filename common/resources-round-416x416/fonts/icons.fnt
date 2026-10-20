@@ -1,0 +1,16 @@
+info face="Inter" size=31 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=1,1
+common lineHeight=32 base=31 scaleW=512 scaleH=33 pages=1 packed=0
+page id=0 file="icons.png"
+chars count=12
+char id=97 x=0 y=0 width=33 height=32 xoffset=-1 yoffset=0 xadvance=31 page=0 chnl=15
+char id=98 x=34 y=0 width=33 height=30 xoffset=-1 yoffset=2 xadvance=31 page=0 chnl=15
+char id=99 x=68 y=0 width=33 height=31 xoffset=-1 yoffset=1 xadvance=31 page=0 chnl=15
+char id=100 x=102 y=0 width=33 height=25 xoffset=-1 yoffset=7 xadvance=31 page=0 chnl=15
+char id=101 x=136 y=0 width=33 height=29 xoffset=-1 yoffset=3 xadvance=31 page=0 chnl=15
+char id=102 x=170 y=0 width=33 height=22 xoffset=-1 yoffset=10 xadvance=31 page=0 chnl=15
+char id=103 x=204 y=0 width=33 height=31 xoffset=-1 yoffset=1 xadvance=31 page=0 chnl=15
+char id=104 x=238 y=0 width=33 height=29 xoffset=-1 yoffset=3 xadvance=31 page=0 chnl=15
+char id=105 x=272 y=0 width=33 height=30 xoffset=-1 yoffset=2 xadvance=31 page=0 chnl=15
+char id=106 x=306 y=0 width=33 height=32 xoffset=-1 yoffset=0 xadvance=31 page=0 chnl=15
+char id=107 x=340 y=0 width=33 height=32 xoffset=-1 yoffset=0 xadvance=31 page=0 chnl=15
+char id=108 x=374 y=0 width=33 height=31 xoffset=-1 yoffset=1 xadvance=31 page=0 chnl=15
