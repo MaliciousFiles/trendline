@@ -321,7 +321,7 @@ class GlucoseFaceView extends WatchUi.WatchFace {
         } else if (e == Err.LOCKED) {
             return "Dexcom account locked";
         } else if (e == Err.NETWORK) {
-            return "No phone connection";
+            return _g.code == -104 ? "No phone connection" : ("Error " + _g.code.format("%d"));
         } else if (e == Err.NO_DATA) {
             return "No readings from Dexcom";
         }

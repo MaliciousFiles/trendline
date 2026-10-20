@@ -257,7 +257,7 @@ class GlucoseWidgetView extends WatchUi.View {
         } else if (e == Err.LOCKED) {
             return "Dexcom locked\nthe account.\nTry again later";
         } else if (e == Err.NETWORK) {
-            return "No connection\nto phone";
+            return networkMessage();
         } else if (e == Err.SERVER) {
             return "Dexcom error\n" + _g.code.format("%d");
         } else if (e == Err.NO_DATA) {
@@ -273,13 +273,31 @@ class GlucoseWidgetView extends WatchUi.View {
         } else if (e == Err.LOCKED) {
             return "account locked";
         } else if (e == Err.NETWORK) {
-            return "no phone connection";
+            return networkShort();
         } else if (e == Err.NO_CREDS) {
             return "no login set";
         } else if (e == Err.NO_DATA) {
             return "no readings";
         }
         return "dexcom error " + _g.code.format("%d");
+    }
+
+    // Negative Connect IQ codes are not all "no phone" (-104). Surface the
+    // number so a misclassified TLS/JSON error is obvious on a real watch.
+    private function networkMessage() as String {
+        var c = _g.code;
+        if (c == -104) {
+            return "No connection\nto phone";
+        }
+        return "Connection error\n" + c.format("%d");
+    }
+
+    private function networkShort() as String {
+        var c = _g.code;
+        if (c == -104) {
+            return "no phone connection";
+        }
+        return "error " + c.format("%d");
     }
 }
 

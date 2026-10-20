@@ -24,8 +24,9 @@ module Err {
 //       LoginPublisherAccountById    -> sessionId
 //       ReadPublisherLatestGlucoseValues
 // The account and session IDs are cached so a normal refresh is a single request.
-// The login endpoints return a bare JSON string, which Connect IQ's JSON parser
-// rejects, so those responses are requested as plain text.
+// Login endpoints return a bare JSON string UUID; modern Connect IQ accepts that
+// as HTTP_RESPONSE_CONTENT_TYPE_JSON (TEXT_PLAIN fails on device because Dexcom
+// still sends Content-Type: application/json).
 (:background)
 class DexcomClient {
     private const APP_ID_US = "d89443d2-327c-4a6f-89e5-496bbb0317db";
@@ -119,9 +120,12 @@ class DexcomClient {
     }
 
     private function authenticate() as Void {
+        // Login endpoints return a bare JSON string ("uuid"). Request JSON
+        // (not TEXT_PLAIN): Dexcom's Content-Type is application/json, and
+        // many watches reject a text/plain mismatch with -400/-401.
         post("General/AuthenticatePublisherAccount",
             { "accountName" => _user, "password" => _pass, "applicationId" => _appId },
-            false, method(:onAuthenticate));
+            true, method(:onAuthenticate));
     }
 
     function onAuthenticate(code as Number, data) as Void {
@@ -137,7 +141,7 @@ class DexcomClient {
     private function login() as Void {
         post("General/LoginPublisherAccountById",
             { "accountId" => _accountId, "password" => _pass, "applicationId" => _appId },
-            false, method(:onLogin));
+            true, method(:onLogin));
     }
 
     function onLogin(code as Number, data) as Void {
@@ -152,9 +156,12 @@ class DexcomClient {
 
     private function readGlucose() as Void {
         // minutes=1440 so the latest reading is returned even when it is stale.
-        var url = "Publisher/ReadPublisherLatestGlucoseValues?sessionId=" + _sessionId
-            + "&minutes=1440&maxCount=" + _count;
-        post(url, {}, true, method(:onGlucose));
+        // Put params in the JSON body (not the URL); that is what works on device.
+        post("Publisher/ReadPublisherLatestGlucoseValues", {
+            "sessionId" => _sessionId,
+            "minutes" => 1440,
+            "maxCount" => _count
+        }, true, method(:onGlucose));
     }
 
     function onGlucose(code as Number, data) as Void {
@@ -198,7 +205,19 @@ class DexcomClient {
             finish(Err.NETWORK, code);
             return;
         }
-        var body = data instanceof String ? data : "";
+        var body = "";
+        if (data instanceof String) {
+            body = data;
+        } else if (data instanceof Dictionary) {
+            var c = data["Code"];
+            var m = data["Message"];
+            if (c instanceof String) {
+                body = c;
+            }
+            if (m instanceof String) {
+                body = body + m;
+            }
+        }
         if (body.find("MaxAttempts") != null) {
             finish(Err.LOCKED, code);
         } else if (body.find("AccountPasswordInvalid") != null
@@ -293,6 +312,7 @@ class DexcomClient {
         if (code != 200 || !(data instanceof String)) {
             return null;
         }
+        // Simulator often keeps the JSON quotes; the device usually strips them.
         var s = trim(data);
         if (s.length() >= 2 && s.substring(0, 1).equals("\"")) {
             s = s.substring(1, s.length() - 1);
