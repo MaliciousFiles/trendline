@@ -1,7 +1,7 @@
 <strings>
     <string id="AccountGroup">Dexcom Share account</string>
-    <string id="AccountGroupDesc">Use the same login as the Dexcom app on your phone. Share must be turned on in the Dexcom app.</string>
-    <string id="Username">Username or email</string>
+    <string id="AccountGroupDesc">Use the login of the Dexcom app that is sharing (not a follower's). In the Dexcom app, Share must be on with at least one follower invited. Phone numbers need + and the country code (e.g. +491701234567). Outside the US, set Region to "Outside the US". If login still fails, enter your account ID instead of the username: sign in at uam2.dexcom.com (outside US) or uam1.dexcom.com (US) and copy the long code from the page address.</string>
+    <string id="Username">Username, email, phone or account ID</string>
     <string id="Password">Password</string>
     <string id="Region">Region</string>
     <string id="RegionUS">United States</string>

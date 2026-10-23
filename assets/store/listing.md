@@ -36,9 +36,17 @@ FEATURES
 - Smart refresh: checks for data right after each new reading should arrive and learns your typical upload delay, so it's fresh without wasting battery
 
 SETUP
-1. In the Dexcom app on your phone, make sure Share is turned on.
+1. In the Dexcom app on your phone, turn on Share and invite at least one follower (Dexcom Share stays inactive until you do).
 2. Install Trendline, then open its settings in the Connect IQ app.
-3. Enter your Dexcom username and password and choose your region.
+3. Enter the username and password of the Dexcom app that is sharing (not a follower's), and choose your region ("Outside the US" for Europe, etc.).
+
+LOGIN NOT WORKING?
+Dexcom reports every login problem as a wrong password, so check:
+- Share is on and at least one follower has been invited.
+- Phone-number usernames include + and the country code, e.g. +491701234567.
+- Region matches your account.
+- Your login works at uam2.dexcom.com (outside the US) or uam1.dexcom.com (US).
+- Still failing? Enter your account ID as the username: after signing in at that site, copy the long code (like 1a2b3c4d-...) from the page address.
 
 Pair with the Trendline Face watch face to see your glucose on your watch face.
 
@@ -60,7 +68,7 @@ PRIVACY: Your Dexcom login is stored in the app's settings on your watch and pho
 
 A clean watch face built around your CGM: time with seconds, date, battery, your current glucose with trend arrow, change and time since the reading, and six configurable data fields.
 
-Works with Dexcom G6 and G7 through Dexcom Share. Sign in with your Dexcom account in the watch face settings.
+Works with Dexcom G6 and G7 through Dexcom Share. Sign in with your Dexcom account in the watch face settings. Share must be on with at least one follower invited; see the Trendline widget listing for login troubleshooting.
 
 FEATURES
 - Glucose value, trend arrow, change and time since the reading, colored by your thresholds

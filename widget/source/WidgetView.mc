@@ -256,7 +256,7 @@ class GlucoseWidgetView extends WatchUi.View {
         if (e == Err.NO_CREDS) {
             return "Add your Dexcom\nShare login in\nConnect IQ settings";
         } else if (e == Err.AUTH) {
-            return "Login failed.\nCheck username\nand password";
+            return "Dexcom login failed.\nSee the tips in\nthe app settings";
         } else if (e == Err.LOCKED) {
             return "Dexcom locked\nthe account.\nTry again later";
         } else if (e == Err.NETWORK) {
