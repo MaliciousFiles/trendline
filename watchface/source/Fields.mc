@@ -3,6 +3,7 @@ import Toybox.ActivityMonitor;
 import Toybox.Application;
 import Toybox.Graphics;
 import Toybox.Lang;
+import Toybox.Position;
 import Toybox.System;
 import Toybox.Time;
 import Toybox.Time.Gregorian;
@@ -113,8 +114,8 @@ module Fields {
         return meters.format("%d") + "m";
     }
 
-    // Garmin weather where the watch has it; otherwise the temperature the
-    // background service fetched from Open-Meteo.
+    // Prefer Garmin weather; fall back to the Open-Meteo value the background
+    // service cached (also used when Weather exists but hasn't synced yet).
     function temperature(now as Number) as String {
         var c = null;
         if (Toybox has :Weather) {
@@ -122,7 +123,8 @@ module Fields {
             if (cond != null && cond.temperature != null) {
                 c = cond.temperature;
             }
-        } else {
+        }
+        if (c == null) {
             var at = Application.Storage.getValue("wxAt");
             var wx = Application.Storage.getValue("wx");
             if (at instanceof Number && now - at < 3 * 3600 && wx != null) {
@@ -136,7 +138,7 @@ module Fields {
         if ((ds has :temperatureUnits) && ds.temperatureUnits == System.UNIT_STATUTE) {
             return (c * 1.8 + 32).format("%d") + "\u00b0";
         }
-        return c.format("%d") + "\u00b0";
+        return (c as Numeric).format("%d") + "\u00b0";
     }
 
     // Next sunrise or sunset as [utcSeconds, isSunrise], refreshed hourly.
@@ -151,8 +153,9 @@ module Fields {
         return _sun;
     }
 
-    // Last known position, remembered across restarts since watch faces only
-    // see a location after a GPS activity or a weather sync.
+    // Last known position, remembered across restarts. Watch faces can't start
+    // GPS; they only see a location after a GPS activity, a weather sync, or
+    // (on some devices) the last Position fix.
     function location() as Array? {
         var deg = null;
         var act = Activity.getActivityInfo();
@@ -163,6 +166,12 @@ module Fields {
             var cond = Toybox.Weather.getCurrentConditions();
             if (cond != null && cond.observationLocationPosition != null) {
                 deg = cond.observationLocationPosition.toDegrees();
+            }
+        }
+        if (deg == null && Toybox has :Position) {
+            var info = Position.getInfo();
+            if (info != null && info.position != null) {
+                deg = info.position.toDegrees();
             }
         }
         if (deg != null && validLocation(deg)) {
@@ -180,7 +189,10 @@ module Fields {
         }
         var la = deg[0].toFloat();
         var lo = deg[1].toFloat();
-        return la >= -90.0 && la <= 90.0 && lo >= -180.0 && lo <= 180.0 && !(la == 0.0 && lo == 0.0);
+        // 180/180 is the CIQ "no fix" sentinel some devices return from Position.
+        return la >= -90.0 && la <= 90.0 && lo >= -180.0 && lo <= 180.0
+            && !(la == 0.0 && lo == 0.0)
+            && !(la == 180.0 && lo == 180.0);
     }
 
     function clock(utc as Number) as String {
@@ -198,6 +210,8 @@ module Fields {
     // Icon glyphs in the generated Icons font (Material Symbols, see gen_fonts.py).
     const GLYPHS = ["", "a", "b", "c", "d", "e", "g", "h", "i", "j"];
     const COLORS = [0, 0x55AAFF, 0xFF5555, 0x55FF55, 0xAAAAAA, 0xFFAA00, 0xFFAA55, 0xFF5500, 0xAAAAFF, 0xFFFF55];
+    // Full-chroma 64-color MIP primaries (same slots as COLORS).
+    const COLORS_MIP = [0, 0x00FFFF, 0xFF0000, 0x00FF00, 0xAAAAAA, 0xFFAA00, 0xFFAA00, 0xFF5500, 0xAA55FF, 0xFFFF00];
 
     // Draws the icon for a field centered at (cx, cy).
     function icon(dc as Graphics.Dc, font as Graphics.FontType, id as Number, cx as Number, cy as Number,
@@ -210,15 +224,15 @@ module Fields {
             var ev = sunEvent(now);
             glyph = demo || (ev != null && !(ev[1] as Boolean)) ? "f" : "e";
         }
-        dc.setColor(COLORS[id], Graphics.COLOR_TRANSPARENT);
+        var palette = Fmt.isMip() ? COLORS_MIP : COLORS;
+        dc.setColor(palette[id], Graphics.COLOR_TRANSPARENT);
         dc.drawText(cx, cy, font, glyph, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
     }
 
-    // Uses the Open-Meteo fallback only when the watch has no weather API.
+    // Fetch Open-Meteo whenever temperature is shown. Garmin weather is tried
+    // first at display time; this covers watches with no Weather API and ones
+    // where weather simply hasn't synced yet.
     function needsWeatherFetch(slots as Array<Number>) as Boolean {
-        if (Toybox has :Weather) {
-            return false;
-        }
         return slots.indexOf(TEMPERATURE) >= 0;
     }
 }

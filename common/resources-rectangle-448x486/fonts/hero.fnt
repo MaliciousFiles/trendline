@@ -1,22 +1,22 @@
 info face="Inter" size=130 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=1,1
-common lineHeight=105 base=101 scaleW=1024 scaleH=200 pages=1 packed=0
+common lineHeight=107 base=103 scaleW=1024 scaleH=203 pages=1 packed=0
 page id=0 file="hero.png"
 chars count=18
-char id=48 x=0 y=0 width=79 height=99 xoffset=-1 yoffset=3 xadvance=77 page=0 chnl=15
-char id=49 x=80 y=0 width=47 height=96 xoffset=-1 yoffset=5 xadvance=45 page=0 chnl=15
-char id=50 x=128 y=0 width=74 height=98 xoffset=-1 yoffset=3 xadvance=72 page=0 chnl=15
-char id=51 x=203 y=0 width=77 height=99 xoffset=-1 yoffset=3 xadvance=75 page=0 chnl=15
-char id=52 x=281 y=0 width=81 height=96 xoffset=-1 yoffset=5 xadvance=79 page=0 chnl=15
-char id=53 x=363 y=0 width=74 height=97 xoffset=-1 yoffset=5 xadvance=72 page=0 chnl=15
-char id=54 x=438 y=0 width=75 height=99 xoffset=-1 yoffset=3 xadvance=73 page=0 chnl=15
+char id=48 x=0 y=0 width=79 height=100 xoffset=-1 yoffset=4 xadvance=77 page=0 chnl=15
+char id=49 x=80 y=0 width=47 height=97 xoffset=-1 yoffset=5 xadvance=45 page=0 chnl=15
+char id=50 x=128 y=0 width=74 height=99 xoffset=-1 yoffset=3 xadvance=72 page=0 chnl=15
+char id=51 x=203 y=0 width=77 height=101 xoffset=-1 yoffset=3 xadvance=75 page=0 chnl=15
+char id=52 x=281 y=0 width=81 height=97 xoffset=-1 yoffset=5 xadvance=79 page=0 chnl=15
+char id=53 x=363 y=0 width=74 height=99 xoffset=-1 yoffset=5 xadvance=72 page=0 chnl=15
+char id=54 x=438 y=0 width=75 height=100 xoffset=-1 yoffset=4 xadvance=73 page=0 chnl=15
 char id=55 x=514 y=0 width=69 height=97 xoffset=-1 yoffset=5 xadvance=67 page=0 chnl=15
-char id=56 x=584 y=0 width=75 height=99 xoffset=-1 yoffset=3 xadvance=73 page=0 chnl=15
-char id=57 x=660 y=0 width=75 height=99 xoffset=-1 yoffset=3 xadvance=73 page=0 chnl=15
-char id=46 x=736 y=0 width=29 height=15 xoffset=-1 yoffset=87 xadvance=27 page=0 chnl=15
-char id=45 x=766 y=0 width=55 height=45 xoffset=-1 yoffset=56 xadvance=53 page=0 chnl=15
-char id=76 x=822 y=0 width=70 height=96 xoffset=-1 yoffset=5 xadvance=68 page=0 chnl=15
-char id=79 x=893 y=0 width=97 height=99 xoffset=-1 yoffset=3 xadvance=95 page=0 chnl=15
-char id=87 x=0 y=100 width=123 height=96 xoffset=-1 yoffset=5 xadvance=121 page=0 chnl=15
-char id=72 x=124 y=100 width=92 height=97 xoffset=-1 yoffset=5 xadvance=90 page=0 chnl=15
-char id=73 x=217 y=100 width=30 height=96 xoffset=-1 yoffset=5 xadvance=28 page=0 chnl=15
-char id=71 x=248 y=100 width=95 height=99 xoffset=-1 yoffset=3 xadvance=93 page=0 chnl=15
+char id=56 x=584 y=0 width=75 height=100 xoffset=-1 yoffset=4 xadvance=73 page=0 chnl=15
+char id=57 x=660 y=0 width=75 height=100 xoffset=-1 yoffset=4 xadvance=73 page=0 chnl=15
+char id=46 x=736 y=0 width=29 height=15 xoffset=-1 yoffset=88 xadvance=27 page=0 chnl=15
+char id=45 x=766 y=0 width=55 height=45 xoffset=-1 yoffset=57 xadvance=53 page=0 chnl=15
+char id=76 x=822 y=0 width=70 height=97 xoffset=-1 yoffset=5 xadvance=68 page=0 chnl=15
+char id=79 x=893 y=0 width=97 height=100 xoffset=-1 yoffset=4 xadvance=95 page=0 chnl=15
+char id=87 x=0 y=102 width=123 height=97 xoffset=-1 yoffset=5 xadvance=121 page=0 chnl=15
+char id=72 x=124 y=102 width=92 height=97 xoffset=-1 yoffset=5 xadvance=90 page=0 chnl=15
+char id=73 x=217 y=102 width=30 height=97 xoffset=-1 yoffset=5 xadvance=28 page=0 chnl=15
+char id=71 x=248 y=102 width=95 height=100 xoffset=-1 yoffset=4 xadvance=93 page=0 chnl=15

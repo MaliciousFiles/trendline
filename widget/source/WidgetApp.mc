@@ -14,6 +14,7 @@ class GlucoseWidgetApp extends Application.AppBase {
 
     function getInitialView() {
         Fmt.load();
+        Application.Storage.setValue("needHistory", true);
         updateBackground();
         view = new GlucoseWidgetView();
         return [view, new GlucoseWidgetDelegate(view)];
@@ -21,6 +22,7 @@ class GlucoseWidgetApp extends Application.AppBase {
 
     function getGlanceView() {
         Fmt.load();
+        Application.Storage.setValue("needHistory", true);
         updateBackground();
         return [new GlucoseGlanceView()];
     }

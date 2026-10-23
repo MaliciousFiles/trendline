@@ -75,6 +75,24 @@ module Ingest {
     function apply(r as Dictionary, fromBackground as Boolean) as Void {
         var s = Application.Storage;
         var now = Time.now().value();
+
+        // Weather-only background tick: don't touch glucose / err state.
+        if (r["wxOnly"] == true) {
+            s.deleteValue("wxPending");
+            s.deleteValue("wxPendingAt");
+            if (r["wxTry"] == true) {
+                s.setValue("wxTryAt", now);
+            }
+            if (r["wx"] != null) {
+                s.setValue("wx", r["wx"]);
+                s.setValue("wxAt", now);
+            }
+            if (fromBackground) {
+                s.setValue("bgAt", now);
+            }
+            return;
+        }
+
         var err = Glucose.numOr(r["e"], Err.SERVER);
 
         s.setValue("err", err);
@@ -86,9 +104,17 @@ module Ingest {
 
         if (err == Err.AUTH || err == Err.LOCKED) {
             s.setValue("authBad", true);
+            s.setValue("authBadAt", now);
+        } else if (err == Err.OK) {
+            s.deleteValue("authBad");
+            s.deleteValue("authBadAt");
         }
         storeId("sid", r["s"]);
         storeId("aid", r["a"]);
+        if (r["wxNext"] == true) {
+            s.setValue("wxPending", true);
+            s.setValue("wxPendingAt", now);
+        }
         if (r["wxTry"] == true) {
             s.setValue("wxTryAt", now);
         }
@@ -102,6 +128,16 @@ module Ingest {
             // Dexcom answered but has no readings at all (Share off, new sensor).
             if (!(new Glucose()).hasData()) {
                 s.setValue("err", Err.NO_DATA);
+            }
+            // Back off full-window retries for a while only when a full 3-hour
+            // request still left a hole: then Dexcom really has no data there.
+            // Smaller fetches (the watch face's 2, a background capped at 12)
+            // say nothing about older history, so they must not block a backfill.
+            var gap = HistoryWant.largestGap((new Glucose()).times, now);
+            if (gap <= HistoryWant.GAP_SECS) {
+                s.deleteValue("gapTry");
+            } else if (Glucose.numOr(r["n"], 0) >= HistoryWant.FULL) {
+                s.setValue("gapTry", now);
             }
         }
         s.setValue("want", wanted(now));
@@ -205,14 +241,8 @@ module Ingest {
         Application.Storage.setValue("buf", buf);
     }
 
-    // How many readings the next fetch should request to fill any gap.
     function wanted(now as Number) as Number {
-        var g = new Glucose();
-        if (!g.hasData()) {
-            return 36;
-        }
-        var n = (now - g.lastTime()) / 300 + 2;
-        return n < 2 ? 2 : (n > 36 ? 36 : n);
+        return HistoryWant.compute(now);
     }
 
     function bufferSecs() as Number {
@@ -234,11 +264,76 @@ module Ingest {
         s.deleteValue("sid");
         s.deleteValue("aid");
         s.deleteValue("authBad");
+        s.deleteValue("authBadAt");
+        s.deleteValue("gapTry");
         s.setValue("err", Err.OK);
     }
 
     // Seconds until the next reading is expected (negative when overdue).
     function secondsUntilNext(g as Glucose, now as Number) as Number {
         return g.lastTime() + 300 - now;
+    }
+}
+
+// Shared by the UI and the background service (Dexcom only returns newest N).
+// Watch face sets Storage "needHistory" = false (tip only); widget sets true.
+(:background, :glance)
+module HistoryWant {
+    const GAP_SECS = 450;     // more than one missed reading
+    const WINDOW = 3 * 3600;  // the widget graph
+    const FULL = 36;          // readings in WINDOW
+
+    function compute(now as Number) as Number {
+        // Face only shows the latest reading (+ prior for delta) — never pull 3h.
+        if (Application.Storage.getValue("needHistory") != true) {
+            return 2;
+        }
+
+        var t = Application.Storage.getValue("ht");
+        if (!(t instanceof Array) || t.size() == 0) {
+            return FULL;
+        }
+        var times = t as Array<Number>;
+        var tip = (now - times[times.size() - 1]) / 300 + 2;
+        if (tip < 2) {
+            tip = 2;
+        } else if (tip > FULL) {
+            tip = FULL;
+        }
+
+        // Complete 3 hours: just top up the newest readings.
+        if (largestGap(times, now) <= GAP_SECS) {
+            return tip;
+        }
+        // Something is missing (left edge, middle or right edge). Dexcom only
+        // returns the newest N, so ask for the whole window, unless a full
+        // request recently came back with the same hole.
+        var tried = Application.Storage.getValue("gapTry");
+        if (tried instanceof Number && now - tried < 15 * 60) {
+            return tip;
+        }
+        return FULL;
+    }
+
+    // Largest stretch of the 3-hour window without a reading, including before
+    // the oldest stored reading and after the newest.
+    function largestGap(times as Array<Number>, now as Number) as Number {
+        var t0 = now - WINDOW;
+        var prev = t0;
+        var maxGap = 0;
+        for (var i = 0; i < times.size(); i++) {
+            var ti = times[i];
+            if (ti < t0) {
+                continue;
+            }
+            if (ti - prev > maxGap) {
+                maxGap = ti - prev;
+            }
+            prev = ti;
+        }
+        if (now - prev > maxGap) {
+            maxGap = now - prev;
+        }
+        return maxGap;
     }
 }

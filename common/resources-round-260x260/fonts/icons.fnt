@@ -6,11 +6,11 @@ char id=97 x=0 y=0 width=22 height=22 xoffset=-1 yoffset=0 xadvance=20 page=0 ch
 char id=98 x=23 y=0 width=22 height=20 xoffset=-1 yoffset=2 xadvance=20 page=0 chnl=15
 char id=99 x=46 y=0 width=22 height=21 xoffset=-1 yoffset=1 xadvance=20 page=0 chnl=15
 char id=100 x=69 y=0 width=22 height=17 xoffset=-1 yoffset=5 xadvance=20 page=0 chnl=15
-char id=101 x=92 y=0 width=22 height=18 xoffset=-1 yoffset=4 xadvance=20 page=0 chnl=15
+char id=101 x=92 y=0 width=22 height=19 xoffset=-1 yoffset=3 xadvance=20 page=0 chnl=15
 char id=102 x=115 y=0 width=22 height=15 xoffset=-1 yoffset=7 xadvance=20 page=0 chnl=15
-char id=103 x=138 y=0 width=22 height=20 xoffset=-1 yoffset=2 xadvance=20 page=0 chnl=15
+char id=103 x=138 y=0 width=22 height=21 xoffset=-1 yoffset=1 xadvance=20 page=0 chnl=15
 char id=104 x=161 y=0 width=22 height=19 xoffset=-1 yoffset=3 xadvance=20 page=0 chnl=15
-char id=105 x=184 y=0 width=22 height=19 xoffset=-1 yoffset=3 xadvance=20 page=0 chnl=15
+char id=105 x=184 y=0 width=22 height=20 xoffset=-1 yoffset=2 xadvance=20 page=0 chnl=15
 char id=106 x=207 y=0 width=22 height=21 xoffset=-1 yoffset=1 xadvance=20 page=0 chnl=15
 char id=107 x=230 y=0 width=22 height=21 xoffset=-1 yoffset=1 xadvance=20 page=0 chnl=15
 char id=108 x=253 y=0 width=22 height=20 xoffset=-1 yoffset=2 xadvance=20 page=0 chnl=15

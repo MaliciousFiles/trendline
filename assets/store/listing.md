@@ -46,7 +46,7 @@ Not affiliated with or endorsed by Dexcom, Inc. Dexcom, Dexcom G6, Dexcom G7 and
 
 IMPORTANT: Trendline is for informational purposes only. It is not a medical device and is not intended for diagnosis, treatment or dosing decisions. Readings can be delayed or missing. Always confirm with your CGM receiver or phone app before acting.
 
-PRIVACY: Your Dexcom login is stored in the app's settings on your watch and phone and is sent only to Dexcom's servers over HTTPS. Trendline has no servers of its own and collects no data.
+PRIVACY: Your Dexcom login is stored in the app's settings on your watch and phone. Because Garmin watches cannot parse Dexcom's login response format directly, the app sends your login over HTTPS to a small proxy that forwards it to Dexcom and returns readings. The proxy does not store credentials or readings.
 
 **Note for reviewers:** enter `demo` as the username (no password) to see synthetic data. In demo mode, tap the screen to cycle through LOW, HIGH, signal loss, sensor error and no-data states.
 
@@ -76,6 +76,6 @@ Not affiliated with or endorsed by Dexcom, Inc. Dexcom, Dexcom G6, Dexcom G7 and
 
 IMPORTANT: For informational purposes only. Not a medical device; not for diagnosis, treatment or dosing decisions. Readings can be delayed or missing.
 
-PRIVACY: Your Dexcom login is sent only to Dexcom's servers over HTTPS. If you use the temperature field on a watch without built-in weather, your approximate location (rounded to about 1 km) is sent to Open-Meteo. No other data is collected.
+PRIVACY: Your Dexcom login is sent over HTTPS to a small proxy that forwards it to Dexcom (Garmin watches cannot parse Dexcom's login response directly). The proxy does not store credentials or readings. If you use the temperature field on a watch without built-in weather, your approximate location (rounded to about 1 km) is sent to Open-Meteo.
 
 **Note for reviewers:** enter `demo` as the username (no password) to see synthetic data.

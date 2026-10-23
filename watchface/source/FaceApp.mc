@@ -12,6 +12,8 @@ class GlucoseFaceApp extends Application.AppBase {
 
     function getInitialView() {
         Fmt.load();
+        // Face has no graph — tip-only glucose pull (weather still allowed).
+        Application.Storage.setValue("needHistory", false);
         Scheduler.scheduleNext();
         view = new GlucoseFaceView();
         return [view, new GlucoseFaceDelegate(view)];

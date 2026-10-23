@@ -100,7 +100,8 @@ class GlucoseWidgetView extends WatchUi.View {
     private function fetch() as Void {
         _fetching = true;
         _lastAttempt = Time.now().value();
-        var want = Glucose.numOr(Application.Storage.getValue("want"), 36);
+        var want = Ingest.wanted(Time.now().value());
+        Application.Storage.setValue("want", want);
         _client = new DexcomClient(method(:onResult), want);
         _client.start();
         WatchUi.requestUpdate();
@@ -161,17 +162,19 @@ class GlucoseWidgetView extends WatchUi.View {
         var colW = aw > dw ? aw : dw;
         var gap = colW > 0 ? arrowSize / 3 : 0;
         var x0 = (w - tw - gap - colW) / 2;
-        var cy = (h * 0.29).toNumber();
+        var cy = (h * 0.32).toNumber();
         dc.setColor(color, Graphics.COLOR_TRANSPARENT);
         dc.drawText(x0, cy, font, text, Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER);
 
         var colX = x0 + tw + gap + colW / 2;
+        var nudge = (h * 0.01).toNumber();
         if (showArrow) {
-            var ay = delta.length() > 0 ? cy - arrowSize * 2 / 5 : cy;
+            // A bit below the glucose midline so the stack reads balanced.
+            var ay = (delta.length() > 0 ? cy - arrowSize / 3 : cy) - nudge;
             Draw.arrow(dc, colX, ay, arrowSize, _g.trend);
         }
         if (delta.length() > 0) {
-            var dy = showArrow ? cy + arrowSize * 3 / 5 : cy;
+            var dy = (showArrow ? cy + arrowSize * 2 / 3 + 4 : cy) + nudge;
             dc.setColor(DIM, Graphics.COLOR_TRANSPARENT);
             dc.drawText(colX, dy, _small, delta, Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
         }

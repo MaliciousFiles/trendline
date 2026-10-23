@@ -43,15 +43,17 @@ FONTS = {
     "Hero": ("0123456789.-LOWHIG", 0.29, 300),   # widget glucose
     "Clock": ("0123456789:", 0.20, 300),         # watch face hours:minutes
     "Sec": ("0123456789", 0.085, 300),           # watch face seconds
-    "Line": ("0123456789.+-LOWHIGmhd> ", 0.085, 400),  # watch face glucose line
+    # Every character Fmt.value/delta/age can produce: "now", "3m", "2h", ">1d".
+    "Line": ("0123456789.+-LOWHIGmhdnow> ", 0.068, 300),  # watch face glucose line
     "Label": (" %+,-./0123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\u00b0",
-              0.072, 500),                       # date, battery, data fields
-    "Small": ("0123456789:+-. dueago", 0.075, 400),  # widget timer and delta
+              0.064, 500),                       # date, battery, data fields
+    # Countdown and "due 1h 05m" / "due >1 day" from Fmt.countdown/elapsed.
+    "Small": ("0123456789:+-. dueagohmy>", 0.075, 400),  # widget timer and delta
     "Word": ("LOWHIG", 0.145, 380, 0.62),        # LOW / HIGH: tall but condensed
 }
 
 
-def build(font_id, chars, px, weight, out_dir, squeeze=1.0, glyphs_from=None, hard=False):
+def build(font_id, chars, px, weight, out_dir, squeeze=1.0, glyphs_from=None, hard=False, tracking=0):
     """glyphs_from maps each output character to the codepoint to render (icons).
     hard=True renders 1-bit edges, which stay crisp on 64-color screens."""
     if glyphs_from:
@@ -78,7 +80,7 @@ def build(font_id, chars, px, weight, out_dir, squeeze=1.0, glyphs_from=None, ha
         ImageDraw.Draw(img).text((1 - x0, 1 - y0), src(c), font=font, fill=255)
         if hard:
             img = img.point(lambda a: 255 if a >= 120 else 0)
-        advance = round(font.getlength(src(c)) * squeeze)
+        advance = round(font.getlength(src(c)) * squeeze) + tracking
         if squeeze != 1.0:
             # BOX averaging: Lanczos overshoots and leaves halos around strokes.
             img = img.resize((max(1, round(img.width * squeeze)), img.height), Image.BOX)

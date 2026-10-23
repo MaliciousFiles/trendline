@@ -1,7 +1,7 @@
 <settings>
     <group id="account" title="@Strings.AccountGroup" description="@Strings.AccountGroupDesc">
         <setting propertyKey="@Properties.username" title="@Strings.Username">
-            <settingConfig type="email" />
+            <settingConfig type="alphaNumeric" />
         </setting>
         <setting propertyKey="@Properties.password" title="@Strings.Password">
             <settingConfig type="password" />

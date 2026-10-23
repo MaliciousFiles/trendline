@@ -8,9 +8,9 @@ char id=99 x=74 y=0 width=36 height=34 xoffset=-1 yoffset=1 xadvance=34 page=0 c
 char id=100 x=111 y=0 width=36 height=27 xoffset=-1 yoffset=8 xadvance=34 page=0 chnl=15
 char id=101 x=148 y=0 width=36 height=31 xoffset=-1 yoffset=4 xadvance=34 page=0 chnl=15
 char id=102 x=185 y=0 width=36 height=24 xoffset=-1 yoffset=11 xadvance=34 page=0 chnl=15
-char id=103 x=222 y=0 width=36 height=33 xoffset=-1 yoffset=2 xadvance=34 page=0 chnl=15
-char id=104 x=259 y=0 width=36 height=32 xoffset=-1 yoffset=3 xadvance=34 page=0 chnl=15
-char id=105 x=296 y=0 width=36 height=32 xoffset=-1 yoffset=3 xadvance=34 page=0 chnl=15
+char id=103 x=222 y=0 width=36 height=34 xoffset=-1 yoffset=1 xadvance=34 page=0 chnl=15
+char id=104 x=259 y=0 width=36 height=31 xoffset=-1 yoffset=4 xadvance=34 page=0 chnl=15
+char id=105 x=296 y=0 width=36 height=33 xoffset=-1 yoffset=2 xadvance=34 page=0 chnl=15
 char id=106 x=333 y=0 width=36 height=35 xoffset=-1 yoffset=0 xadvance=34 page=0 chnl=15
 char id=107 x=370 y=0 width=36 height=35 xoffset=-1 yoffset=0 xadvance=34 page=0 chnl=15
 char id=108 x=407 y=0 width=36 height=33 xoffset=-1 yoffset=2 xadvance=34 page=0 chnl=15

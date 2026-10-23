@@ -72,11 +72,15 @@ class GlucoseFaceView extends WatchUi.WatchFace {
 
     function onExitSleep() as Void {
         _sleeping = false;
+        // Wake is a chance to pull a stuck/overdue background schedule forward.
+        Scheduler.scheduleNext();
         WatchUi.requestUpdate();
     }
 
     function onUpdate(dc as Graphics.Dc) as Void {
         Scheduler.ensureScheduled();
+        // Keep last-known lat/lon fresh for background Open-Meteo.
+        Fields.location();
 
         var w = dc.getWidth();
         var h = dc.getHeight();
@@ -104,7 +108,7 @@ class GlucoseFaceView extends WatchUi.WatchFace {
         drawTime(dc, cx, (h * 0.45).toNumber(), !_sleeping || _partialOk);
         drawGlucoseLine(dc, cx, (h * 0.68).toNumber(), now);
 
-        var sideL = (w * 0.115).toNumber();
+        var sideL = (w * 0.10).toNumber();
         var sideR = w - sideL;
         var row1 = (h * 0.37).toNumber();
         var row2 = (h * 0.58).toNumber();
@@ -201,6 +205,9 @@ class GlucoseFaceView extends WatchUi.WatchFace {
         var arrowSize = lineH * 3 / 4;
         var showArrow = !stale && Draw.hasArrow(_g.trend);
         var gap = lineH / 4;
+        var gapArrow = gap;
+        var gapChange = gap + 5; // number(/arrow) → change
+        var gapAge = gap + 8;    // change → age
 
         var vw = dc.getTextWidthInPixels(value, _line);
         var aw = showArrow ? Draw.arrowWidth(arrowSize, _g.trend) : 0;
@@ -208,7 +215,7 @@ class GlucoseFaceView extends WatchUi.WatchFace {
         var midFont = problem != null ? _label : _line;
         var mw = mid.length() > 0 ? dc.getTextWidthInPixels(mid, midFont) : 0;
         var agw = dc.getTextWidthInPixels(ageText, _line);
-        var total = vw + (aw > 0 ? gap + aw : 0) + (mw > 0 ? gap + mw : 0) + gap + agw;
+        var total = vw + (aw > 0 ? gapArrow + aw : 0) + (mw > 0 ? gapChange + mw : 0) + gapAge + agw;
         var x = cx - total / 2;
         var j = Graphics.TEXT_JUSTIFY_LEFT | Graphics.TEXT_JUSTIFY_VCENTER;
 
@@ -216,19 +223,19 @@ class GlucoseFaceView extends WatchUi.WatchFace {
         dc.drawText(x, cy, _line, value, j);
         x += vw;
         if (aw > 0) {
-            Draw.arrow(dc, x + gap + aw / 2, cy, arrowSize, _g.trend);
-            x += gap + aw;
+            Draw.arrow(dc, x + gapArrow + aw / 2, cy, arrowSize, _g.trend);
+            x += gapArrow + aw;
         }
         if (mw > 0) {
             dc.setColor(problem != null ? Fmt.LATE_COLOR : DIM, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(x + gap, cy, midFont, mid, j);
-            x += gap + mw;
+            dc.drawText(x + gapChange, cy, midFont, mid, j);
+            x += gapChange + mw;
         }
         dc.setColor(late ? Fmt.LATE_COLOR : FAINT, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(x + gap, cy, _line, ageText, j);
+        dc.drawText(x + gapAge, cy, _line, ageText, j);
     }
 
-    // Side slot: icon above value.
+    // Side slot: icon above value, both centered on the column.
     private function drawStacked(dc as Graphics.Dc, id as Number, cx as Number, cy as Number, s as Number, now as Number) as Void {
         if (id == Fields.NONE) {
             return;
@@ -322,10 +329,22 @@ class GlucoseFaceView extends WatchUi.WatchFace {
             return "Dexcom account locked";
         } else if (e == Err.NETWORK) {
             return _g.code == -104 ? "No phone connection" : ("Error " + _g.code.format("%d"));
+        } else if (e == Err.SERVER) {
+            return _g.code != 0 ? ("Server " + _g.code.format("%d")) : "Dexcom error";
         } else if (e == Err.NO_DATA) {
             return "No readings from Dexcom";
         }
-        return "Waiting for data";
+        // err still 0 and no readings: background has never delivered a glucose
+        // result since install (or storage was wiped). Not a Dexcom "empty" reply.
+        var fetchAt = Application.Storage.getValue("fetchAt");
+        if (fetchAt instanceof Number) {
+            var ago = Time.now().value() - fetchAt;
+            if (ago < 60) {
+                return "Synced, no reading";
+            }
+            return "Last sync " + (ago / 60).format("%d") + "m ago";
+        }
+        return "Waiting for first sync";
     }
 
     private function centered() as Number {

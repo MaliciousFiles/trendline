@@ -2,6 +2,7 @@ import Toybox.Application;
 import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.Math;
+import Toybox.System;
 
 // Display formatting and the glucose color scale.
 (:glance)
@@ -16,7 +17,8 @@ module Fmt {
     const LATE_SECS = 5 * 60;      // a new reading was due
     const STALE_SECS = 15 * 60;    // value greyed out
     const EXPIRED_SECS = 60 * 60;  // value hidden
-    const LATE_COLOR = 0xFF5555;
+    // Set in load(): softer on AMOLED, full-chroma on MIP.
+    var LATE_COLOR as Number = 0xFF5555;
 
     function load() as Void {
         low = prop("low", 70);
@@ -29,17 +31,31 @@ module Fmt {
         var urgentLow = low - 15 < 40 ? 40 : low - 15;
         var justLow = low > urgentLow ? low - 1 : low;
         var justHigh = high + 1;
-        // Flat lime across the whole in-range band, with sharp edges:
-        //   very low ──gradient── pastel red | lime | yellow ──gradient── orange
-        _stops = [
-            urgentLow, 0xBB2222,
-            justLow,   0xFF5A5A,
-            low,       0x55EE66,
-            high,      0x55EE66,
-            justHigh,  0xFFEE00,
-            high + 70, 0xFF9900,
-            high + 140, 0xFF6600
-        ];
+        // Flat lime across the in-range band. MIP uses the 64-color primaries
+        // (00/55/AA/FF) so reflective screens stay vivid; AMOLED keeps softer tones.
+        if (isMip()) {
+            LATE_COLOR = 0xFF0000;
+            _stops = [
+                urgentLow, 0xFF0000,
+                justLow,   0xFF5500,
+                low,       0x00FF00,
+                high,      0x00FF00,
+                justHigh,  0xFFFF00,
+                high + 70, 0xFFAA00,
+                high + 140, 0xFF5500
+            ];
+        } else {
+            LATE_COLOR = 0xFF5555;
+            _stops = [
+                urgentLow, 0xBB2222,
+                justLow,   0xFF5A5A,
+                low,       0x55EE66,
+                high,      0x55EE66,
+                justHigh,  0xFFEE00,
+                high + 70, 0xFF9900,
+                high + 140, 0xFF6600
+            ];
+        }
     }
 
     function prop(key as String, def as Number) as Number {
@@ -78,6 +94,18 @@ module Fmt {
 
     function mix(a as Number, b as Number, f as Float) as Number {
         return (a + (b - a) * f + 0.5).toNumber();
+    }
+
+    // No API for palette size; AMOLED/LCD advertise burn-in or getDisplayMode.
+    function isMip() as Boolean {
+        var ds = System.getDeviceSettings();
+        if ((ds has :requiresBurnInProtection) && ds.requiresBurnInProtection) {
+            return false;
+        }
+        if (System has :getDisplayMode) {
+            return false;
+        }
+        return true;
     }
 
     // Dexcom Share values: 39 = LOW, 401 = HIGH, below 39 = sensor error code.
